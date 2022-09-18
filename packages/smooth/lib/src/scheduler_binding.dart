@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -8,8 +9,16 @@ mixin SmoothSchedulerBindingMixin on SchedulerBinding {
 
   @override
   void handleBeginFrame(Duration? rawTimeStamp) {
-    _beginFrameTime = DateTime.now();
+    _beginFrameTime = clock.now();
     super.handleBeginFrame(rawTimeStamp);
+  }
+
+  static SmoothSchedulerBindingMixin get instance {
+    final raw = WidgetsBinding.instance;
+    if (raw is! SmoothSchedulerBindingMixin) {
+      throw Exception('Please use a WidgetsBinding with SmoothSchedulerBindingMixin');
+    }
+    return raw as SmoothSchedulerBindingMixin;
   }
 }
 
