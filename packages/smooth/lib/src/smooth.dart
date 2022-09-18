@@ -4,12 +4,12 @@ import 'package:smooth/src/build_after_previous_build_or_layout.dart';
 import 'package:smooth/src/time_budget.dart';
 
 class Smooth extends StatelessWidget {
-  final Widget? placeholder;
+  final Widget? emptyPlaceholder;
   final Widget child;
 
   const Smooth({
     super.key,
-    this.placeholder,
+    this.emptyPlaceholder,
     required this.child,
   });
 
@@ -17,7 +17,7 @@ class Smooth extends StatelessWidget {
   Widget build(BuildContext context) {
     return BuildAfterPreviousBuildOrLayout(
       child: _SmoothCore(
-        placeholder: placeholder,
+        emptyPlaceholder: emptyPlaceholder,
         child: child,
       ),
     );
@@ -25,11 +25,11 @@ class Smooth extends StatelessWidget {
 }
 
 class _SmoothCore extends StatefulWidget {
-  final Widget? placeholder;
+  final Widget? emptyPlaceholder;
   final Widget child;
 
   const _SmoothCore({
-    required this.placeholder,
+    required this.emptyPlaceholder,
     required this.child,
   });
 
@@ -48,8 +48,12 @@ class _SmoothCoreState extends State<_SmoothCore> {
       previousChild = widget.child;
       return widget.child;
     } else {
-      SchedulerBinding.instance.addPostFrameCallback((_) => setState(() {}));
-      return widget.placeholder ?? previousChild ?? const SizedBox();
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        setState(() {});
+      });
+
+      return previousChild ?? widget.emptyPlaceholder ?? const SizedBox(height: 48);
     }
   }
 }

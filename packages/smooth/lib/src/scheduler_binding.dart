@@ -15,9 +15,7 @@ mixin SmoothSchedulerBindingMixin on SchedulerBinding {
 
   static SmoothSchedulerBindingMixin get instance {
     final raw = WidgetsBinding.instance;
-    if (raw is! SmoothSchedulerBindingMixin) {
-      throw Exception('Please use a WidgetsBinding with SmoothSchedulerBindingMixin');
-    }
+    assert(raw is SmoothSchedulerBindingMixin, 'Please use a WidgetsBinding with SmoothSchedulerBindingMixin');
     return raw as SmoothSchedulerBindingMixin;
   }
 }

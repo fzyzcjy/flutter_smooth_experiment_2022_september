@@ -10,7 +10,7 @@ void main() {
   testWidgets('should get beginFrameTime', (tester) async {
     final startTime = clock.now();
 
-    await tester.pumpWidget(CircularProgressIndicator(), const Duration(milliseconds: 100));
+    await tester.pumpWidget(const CircularProgressIndicator(), const Duration(milliseconds: 100));
     expect(SmoothSchedulerBindingMixin.instance.beginFrameTime, startTime.add(const Duration(milliseconds: 100)));
 
     await tester.pump(const Duration(milliseconds: 200));
