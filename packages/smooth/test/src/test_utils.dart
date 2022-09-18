@@ -7,6 +7,7 @@ class SpyRenderObjectWidget extends SingleChildRenderObjectWidget {
   const SpyRenderObjectWidget({
     super.key,
     required this.onPerformLayout,
+    super.child,
   });
 
   @override
@@ -34,6 +35,7 @@ class SpyStatefulWidget extends StatefulWidget {
   final VoidCallback? onInitState;
   final VoidCallback? onDidUpdateWidget;
   final VoidCallback? onDispose;
+  final Widget? child;
 
   const SpyStatefulWidget({
     super.key,
@@ -41,6 +43,7 @@ class SpyStatefulWidget extends StatefulWidget {
     this.onInitState,
     this.onDidUpdateWidget,
     this.onDispose,
+    this.child,
   });
 
   @override
@@ -69,6 +72,6 @@ class _SpyStatefulWidgetState extends State<SpyStatefulWidget> {
   @override
   Widget build(BuildContext context) {
     widget.onBuild?.call();
-    return Container();
+    return widget.child ?? Container();
   }
 }
