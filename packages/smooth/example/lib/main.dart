@@ -41,9 +41,20 @@ class ExamplePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(enableSmooth ? 'Smooth' : 'Jank')),
-      body: ListView.builder(
-        itemBuilder: _buildItem,
+      appBar: AppBar(
+        title: Text(enableSmooth ? 'Smooth' : 'Jank'),
+      ),
+      body: Stack(
+        children: [
+          ListView.builder(
+            itemBuilder: _buildItem,
+          ),
+          const Center(
+            child: IgnorePointer(
+              child: _ExampleAnimation(),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -51,7 +62,7 @@ class ExamplePage extends StatelessWidget {
   Widget _buildItem(BuildContext context, int index) {
     return _maybeWrapSmooth(
       index: index,
-      child: ExampleItemWidget(
+      child: _ExampleItemWidget(
         key: ValueKey('item-$index'),
         index: index,
       ),
@@ -68,10 +79,39 @@ class ExamplePage extends StatelessWidget {
   }
 }
 
-class ExampleItemWidget extends StatelessWidget {
+class _ExampleAnimation extends StatefulWidget {
+  const _ExampleAnimation();
+
+  @override
+  State<_ExampleAnimation> createState() => _ExampleAnimationState();
+}
+
+class _ExampleAnimationState extends State<_ExampleAnimation> with TickerProviderStateMixin {
+  late final _controller = AnimationController(duration: const Duration(milliseconds: 2000), vsync: this)..repeat();
+  late final Animation<double> _animation = CurvedAnimation(parent: _controller, curve: Curves.elasticOut);
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return RotationTransition(
+      turns: _animation,
+      child: const Padding(
+        padding: EdgeInsets.all(8.0),
+        child: FlutterLogo(size: 150.0),
+      ),
+    );
+  }
+}
+
+class _ExampleItemWidget extends StatelessWidget {
   final int index;
 
-  const ExampleItemWidget({super.key, required this.index});
+  const _ExampleItemWidget({super.key, required this.index});
 
   @override
   Widget build(BuildContext context) {

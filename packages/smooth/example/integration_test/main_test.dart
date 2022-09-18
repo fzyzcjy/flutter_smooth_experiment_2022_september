@@ -13,7 +13,11 @@ void main() {
       await tester.pumpWidget(ExamplePage(enableSmooth: enableSmooth));
 
       await binding.traceAction(reportKey: enableSmooth ? 'smooth_enable' : 'smooth_disable', () async {
-        await tester.scrollUntilVisible(find.byKey(const ValueKey('item-50')), 200);
+        await tester.scrollUntilVisible(
+          find.byKey(const ValueKey('item-100')),
+          500,
+          duration: const Duration(milliseconds: 50),
+        );
       });
     });
   }
