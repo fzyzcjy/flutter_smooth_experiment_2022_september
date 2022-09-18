@@ -15,8 +15,8 @@ void main() {
 
       final timeline = await binding.traceTimeline(() async {
         await tester.scrollUntilVisible(
-          find.byKey(const ValueKey('item-500')),
-          500,
+          find.byKey(const ValueKey('item-200')),
+          200,
           duration: const Duration(milliseconds: 50),
           maxScrolls: 1000,
         );

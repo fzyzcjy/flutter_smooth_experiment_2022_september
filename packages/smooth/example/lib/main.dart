@@ -73,6 +73,7 @@ class ExamplePage extends StatelessWidget {
     return enableSmooth
         ? Smooth(
             debugName: 'item-$index',
+            emptyPlaceholder: const SizedBox(height: 24),
             child: child,
           )
         : child;
@@ -117,29 +118,25 @@ class _ExampleItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     // mimic the official test, with heavier content, to mimic heavy build & layout in real world
     // https://github.com/flutter/flutter/blob/master/dev/benchmarks/macrobenchmarks/lib/src/list_text_layout.dart
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          CircleAvatar(child: Text('$index')),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Text(
-              _kLongText * 5,
-              style: const TextStyle(fontSize: 3),
-            ),
+    return SizedBox(
+      height: 24,
+      child: ListTile(
+        dense: true,
+        visualDensity: VisualDensity.compact,
+        leading: SizedBox(
+          width: 16,
+          height: 16,
+          child: CircleAvatar(
+            child: Text('G$index'),
           ),
-        ],
+        ),
+        title: Text(
+          'Foo contact from $index-th local contact' * 5,
+          overflow: TextOverflow.ellipsis,
+          style: const TextStyle(fontSize: 5),
+        ),
+        subtitle: Text('+91 88888 8800$index'),
       ),
     );
   }
 }
-
-// standard long text
-const _kLongText =
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore '
-    'et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea '
-    'commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla '
-    'pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id '
-    'est laborum.';

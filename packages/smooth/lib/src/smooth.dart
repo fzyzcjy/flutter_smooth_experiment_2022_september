@@ -5,13 +5,13 @@ import 'package:smooth/src/time_budget.dart';
 
 class Smooth extends StatefulWidget {
   final String? debugName;
-  final Widget? emptyPlaceholder;
+  final Widget emptyPlaceholder;
   final Widget child;
 
   const Smooth({
     super.key,
     this.debugName,
-    this.emptyPlaceholder,
+    this.emptyPlaceholder = const SizedBox(height: 48),
     required this.child,
   });
 
@@ -42,7 +42,7 @@ class _SmoothState extends State<Smooth> {
           setState(() {});
         });
 
-        return previousChild ?? widget.emptyPlaceholder ?? const SizedBox(height: 48);
+        return previousChild ?? widget.emptyPlaceholder;
       }
     });
   }
