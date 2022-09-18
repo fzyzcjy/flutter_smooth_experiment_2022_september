@@ -46,7 +46,7 @@ void main() {
             ({required onPrevious, required onSelfBuild}) => Column(
               children: [
                 _buildPreviousWidget(onPrevious),
-                BuildAfterPreviousBuildOrLayout(child: SpyStatefulWidget(onBuild: onSelfBuild)),
+                BuildAfterPreviousBuildOrLayout(builder: (_) => SpyStatefulWidget(onBuild: onSelfBuild)),
               ],
             ),
           );
@@ -58,7 +58,7 @@ void main() {
             ({required onPrevious, required onSelfBuild}) => Column(
               children: [
                 LayoutBuilder(builder: (_, __) => _buildPreviousWidget(onPrevious)),
-                BuildAfterPreviousBuildOrLayout(child: SpyStatefulWidget(onBuild: onSelfBuild)),
+                BuildAfterPreviousBuildOrLayout(builder: (_) => SpyStatefulWidget(onBuild: onSelfBuild)),
               ],
             ),
           );
@@ -75,7 +75,7 @@ void main() {
                     case 0:
                       return _buildPreviousWidget(onPrevious);
                     case 1:
-                      return BuildAfterPreviousBuildOrLayout(child: SpyStatefulWidget(onBuild: onSelfBuild));
+                      return BuildAfterPreviousBuildOrLayout(builder: (_) => SpyStatefulWidget(onBuild: onSelfBuild));
                     default:
                       throw Exception;
                   }

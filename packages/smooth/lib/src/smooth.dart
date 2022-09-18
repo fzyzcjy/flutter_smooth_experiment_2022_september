@@ -3,7 +3,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:smooth/src/build_after_previous_build_or_layout.dart';
 import 'package:smooth/src/time_budget.dart';
 
-class Smooth extends StatelessWidget {
+class Smooth extends StatefulWidget {
   final String? debugName;
   final Widget? emptyPlaceholder;
   final Widget child;
@@ -16,52 +16,34 @@ class Smooth extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return BuildAfterPreviousBuildOrLayout(
-      child: _SmoothCore(
-        debugName: debugName,
-        emptyPlaceholder: emptyPlaceholder,
-        child: child,
-      ),
-    );
-  }
+  State<Smooth> createState() => _SmoothState();
 }
 
-class _SmoothCore extends StatefulWidget {
-  final String? debugName;
-  final Widget? emptyPlaceholder;
-  final Widget child;
-
-  const _SmoothCore({
-    required this.debugName,
-    required this.emptyPlaceholder,
-    required this.child,
-  });
-
-  @override
-  State<_SmoothCore> createState() => _SmoothCoreState();
-}
-
-class _SmoothCoreState extends State<_SmoothCore> {
+class _SmoothState extends State<Smooth> {
   Widget? previousChild;
 
   @override
   Widget build(BuildContext context) {
-    print(
-        '$runtimeType.build[${widget.debugName}] now=${DateTime.now()} sufficient=${BaseTimeBudget.instance.timeSufficient}');
+    // print(
+    //     '$runtimeType.build.outside[${widget.debugName}] now=${DateTime.now()} sufficient=${BaseTimeBudget.instance.timeSufficient}');
 
-    // In *normal* cases, we should not put non-pure logic inside `build`.
-    // But we are hacking here, and it is safe - see readme for more details.
-    if (BaseTimeBudget.instance.timeSufficient) {
-      previousChild = widget.child;
-      return widget.child;
-    } else {
-      SchedulerBinding.instance.addPostFrameCallback((_) {
-        if (!mounted) return;
-        setState(() {});
-      });
+    return BuildAfterPreviousBuildOrLayout(builder: (context) {
+      // print(
+      //     '$runtimeType.build.inside[${widget.debugName}] now=${DateTime.now()} sufficient=${BaseTimeBudget.instance.timeSufficient}');
 
-      return previousChild ?? widget.emptyPlaceholder ?? const SizedBox(height: 48);
-    }
+      // In *normal* cases, we should not put non-pure logic inside `build`.
+      // But we are hacking here, and it is safe - see readme for more details.
+      if (BaseTimeBudget.instance.timeSufficient) {
+        previousChild = widget.child;
+        return widget.child;
+      } else {
+        SchedulerBinding.instance.addPostFrameCallback((_) {
+          if (!mounted) return;
+          setState(() {});
+        });
+
+        return previousChild ?? widget.emptyPlaceholder ?? const SizedBox(height: 48);
+      }
+    });
   }
 }
