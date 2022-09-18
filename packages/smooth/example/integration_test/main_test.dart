@@ -14,12 +14,13 @@ void main() {
       await tester.pumpWidget(MaterialApp(home: ExamplePage(enableSmooth: enableSmooth)));
 
       final timeline = await binding.traceTimeline(() async {
-        await tester.scrollUntilVisible(
-          find.byKey(const ValueKey('item-200')),
-          200,
-          duration: const Duration(milliseconds: 50),
-          maxScrolls: 1000,
-        );
+        for (var iter = 0; iter < 20; ++iter) {
+          await tester.drag(find.byType(Scrollable), const Offset(0, -500));
+
+          for (var pumpIter = 0; pumpIter < 10; ++pumpIter) {
+            await tester.pump();
+          }
+        }
       });
 
       final reportKey = enableSmooth ? 'smooth_enable' : 'smooth_disable';
