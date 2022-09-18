@@ -1,3 +1,5 @@
+import 'package:smooth/src/scheduler_binding.dart';
+
 abstract class BaseTimeBudget {
   static BaseTimeBudget get instance => debugOverrideInstance ?? _realInstance;
 
@@ -9,9 +11,12 @@ abstract class BaseTimeBudget {
 }
 
 class RealTimeBudget extends BaseTimeBudget {
-  // TODO implement it
+  // TODO make it configurable
+  static const kTimeThreshold = Duration(milliseconds: 12);
+
   @override
-  bool get timeSufficient => throw UnimplementedError();
+  bool get timeSufficient =>
+      DateTime.now().difference(SmoothWidgetsFlutterBinding.instance.beginFrameTime!) < kTimeThreshold;
 }
 
 class FakeTimeBudget extends BaseTimeBudget {
