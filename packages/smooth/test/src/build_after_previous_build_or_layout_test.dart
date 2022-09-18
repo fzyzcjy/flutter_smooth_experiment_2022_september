@@ -28,55 +28,46 @@ void main() {
       expect(selfBuildCalled, true);
     }
 
-    testWidgets('when previous is simple widget, and consider its layout', (tester) async {
-      await _body(
-        tester,
-        ({required onPrevious, required onSelfBuild}) => Column(
-          children: [
-            _RecordLayoutWidget(onLayout: onPrevious),
-            BuildAfterPreviousBuildOrLayout(child: _RecordBuildWidget(onBuild: onSelfBuild)),
-          ],
-        ),
-      );
-    });
+    for (final layoutOrBuild in _LayoutOrBuild.values) {
+      group('consider ${layoutOrBuild.name}', () {
+        Widget _buildPreviousWidget(VoidCallback onPrevious) {
+          switch (layoutOrBuild) {
+            case _LayoutOrBuild.layout:
+              return _RecordLayoutWidget(onLayout: onPrevious);
+            case _LayoutOrBuild.build:
+              return _RecordBuildWidget(onBuild: onPrevious);
+          }
+        }
 
-    testWidgets('when previous is simple widget, and consider its build', (tester) async {
-      await _body(
-        tester,
-        ({required onPrevious, required onSelfBuild}) => Column(
-          children: [
-            _RecordBuildWidget(onBuild: onPrevious),
-            BuildAfterPreviousBuildOrLayout(child: _RecordBuildWidget(onBuild: onSelfBuild)),
-          ],
-        ),
-      );
-    });
+        testWidgets('when previous is simple widget', (tester) async {
+          await _body(
+            tester,
+            ({required onPrevious, required onSelfBuild}) => Column(
+              children: [
+                _buildPreviousWidget(onPrevious),
+                BuildAfterPreviousBuildOrLayout(child: _RecordBuildWidget(onBuild: onSelfBuild)),
+              ],
+            ),
+          );
+        });
 
-    testWidgets('when previous is wrapped within LayoutBuilder, and consider its layout', (tester) async {
-      await _body(
-        tester,
-        ({required onPrevious, required onSelfBuild}) => Column(
-          children: [
-            LayoutBuilder(builder: (_, __) => _RecordLayoutWidget(onLayout: onPrevious)),
-            BuildAfterPreviousBuildOrLayout(child: _RecordBuildWidget(onBuild: onSelfBuild)),
-          ],
-        ),
-      );
-    });
-
-    testWidgets('when previous is wrapped within LayoutBuilder, and consider its build', (tester) async {
-      await _body(
-        tester,
-        ({required onPrevious, required onSelfBuild}) => Column(
-          children: [
-            LayoutBuilder(builder: (_, __) => _RecordBuildWidget(onBuild: onPrevious)),
-            BuildAfterPreviousBuildOrLayout(child: _RecordBuildWidget(onBuild: onSelfBuild)),
-          ],
-        ),
-      );
-    });
+        testWidgets('when previous is wrapped within LayoutBuilder', (tester) async {
+          await _body(
+            tester,
+            ({required onPrevious, required onSelfBuild}) => Column(
+              children: [
+                LayoutBuilder(builder: (_, __) => _buildPreviousWidget(onPrevious)),
+                BuildAfterPreviousBuildOrLayout(child: _RecordBuildWidget(onBuild: onSelfBuild)),
+              ],
+            ),
+          );
+        });
+      });
+    }
   });
 }
+
+enum _LayoutOrBuild { layout, build }
 
 class _RecordLayoutWidget extends SingleChildRenderObjectWidget {
   final VoidCallback onLayout;
