@@ -126,8 +126,8 @@ class _ExampleItemWidget extends StatelessWidget {
           const SizedBox(width: 8),
           Expanded(
             child: Text(
-              _kLongText * 2,
-              style: const TextStyle(fontSize: 5),
+              _kLongText * 5,
+              style: const TextStyle(fontSize: 3),
             ),
           ),
         ],

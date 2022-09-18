@@ -12,7 +12,7 @@ abstract class BaseTimeBudget {
 
 class RealTimeBudget extends BaseTimeBudget {
   // TODO make it configurable
-  static const kTimeThreshold = Duration(milliseconds: 12);
+  static const kTimeThreshold = Duration(milliseconds: 10);
 
   @override
   bool get timeSufficient =>

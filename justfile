@@ -19,6 +19,7 @@ benchmark:
     cd packages/smooth/example && flutter drive \
        --driver=test_driver/benchmark_driver.dart \
        --target=integration_test/main_test.dart \
+       --no-dds \
        --profile
 
 release old_version new_version:
