@@ -50,6 +50,7 @@ class ExamplePage extends StatelessWidget {
 
   Widget _buildItem(BuildContext context, int index) {
     return _maybeWrapSmooth(
+      index: index,
       child: ExampleItemWidget(
         key: ValueKey('item-$index'),
         index: index,
@@ -57,7 +58,14 @@ class ExamplePage extends StatelessWidget {
     );
   }
 
-  Widget _maybeWrapSmooth({required Widget child}) => enableSmooth ? Smooth(child: child) : child;
+  Widget _maybeWrapSmooth({required int index, required Widget child}) {
+    return enableSmooth
+        ? Smooth(
+            debugName: 'item-$index',
+            child: child,
+          )
+        : child;
+  }
 }
 
 class ExampleItemWidget extends StatelessWidget {
