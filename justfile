@@ -15,6 +15,12 @@ all: pub-get build-runner format analyze
 publish_all:
     (cd packages/smooth && flutter pub publish --force --server=https://pub.dartlang.org)
 
+benchmark:
+    cd packages/smooth/example && flutter drive \
+       --driver=test_driver/benchmark_driver.dart \
+       --target=integration_test/main_test.dart \
+       --profile
+
 release old_version new_version:
     grep -q 'version: {{old_version}}' packages/smooth/pubspec.yaml
     grep -q '{{new_version}}' CHANGELOG.md
