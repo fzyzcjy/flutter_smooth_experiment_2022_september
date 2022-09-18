@@ -1,6 +1,5 @@
 import 'package:example/main.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:smooth/smooth.dart';
@@ -14,11 +13,8 @@ void main() {
       await tester.pumpWidget(ExamplePage(enableSmooth: enableSmooth));
 
       await binding.traceAction(reportKey: enableSmooth ? 'smooth_enable' : 'smooth_disable', () async {
-        TODO;
-        await tester.pumpAndSettle();
+        await tester.scrollUntilVisible(find.byKey(const ValueKey('item-50')), 200);
       });
-
-      TODO;
     });
   }
 }

@@ -16,7 +16,7 @@ class RealTimeBudget extends BaseTimeBudget {
 
   @override
   bool get timeSufficient =>
-      DateTime.now().difference(SmoothWidgetsFlutterBinding.instance.beginFrameTime!) < kTimeThreshold;
+      DateTime.now().difference(SmoothSchedulerBindingMixin.instance.beginFrameTime!) < kTimeThreshold;
 }
 
 class FakeTimeBudget extends BaseTimeBudget {
