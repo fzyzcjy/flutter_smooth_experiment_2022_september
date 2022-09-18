@@ -1,9 +1,17 @@
+import 'package:example/main.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:integration_test/integration_test.dart';
+import 'package:smooth/smooth.dart';
+import 'package:smooth/src/scheduler_binding.dart';
+
 void main() {
   final binding = SmoothIntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   for (final enableSmooth in [false, true]) {
     testWidgets('enableSmooth=$enableSmooth', (tester) async {
-      await tester.pumpWidget(_ExampleApp(enableSmooth: enableSmooth));
+      await tester.pumpWidget(ExamplePage(enableSmooth: enableSmooth));
 
       await binding.traceAction(reportKey: enableSmooth ? 'smooth_enable' : 'smooth_disable', () async {
         TODO;
