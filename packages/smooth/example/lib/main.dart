@@ -40,21 +40,25 @@ class ExamplePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(enableSmooth ? 'Smooth' : 'Jank'),
-      ),
-      body: Stack(
-        children: [
-          ListView.builder(
-            itemBuilder: _buildItem,
-          ),
-          const Center(
-            child: IgnorePointer(
-              child: _ExampleAnimation(),
+    // Our dummy case has so much sementics (since containing very long text), which is very unreal.
+    // So we exclude semantics to make the test mimic real case.
+    return ExcludeSemantics(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(enableSmooth ? 'Smooth' : 'Jank'),
+        ),
+        body: Stack(
+          children: [
+            ListView.builder(
+              itemBuilder: _buildItem,
             ),
-          ),
-        ],
+            const Center(
+              child: IgnorePointer(
+                child: _ExampleAnimation(),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
