@@ -62,6 +62,27 @@ void main() {
             ),
           );
         });
+
+        testWidgets('when previous and self are in ListView', (tester) async {
+          await _body(
+            tester,
+            ({required onPrevious, required onSelfBuild}) => MaterialApp(
+              home: ListView.builder(
+                itemCount: 2,
+                itemBuilder: (_, index) {
+                  switch (index) {
+                    case 0:
+                      return _buildPreviousWidget(onPrevious);
+                    case 1:
+                      return BuildAfterPreviousBuildOrLayout(child: _RecordBuildWidget(onBuild: onSelfBuild));
+                    default:
+                      throw Exception;
+                  }
+                },
+              ),
+            ),
+          );
+        });
       });
     }
   });
